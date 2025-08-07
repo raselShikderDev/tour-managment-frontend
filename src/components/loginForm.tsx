@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 
 import image from "@/assets/images/login2.jpg"
 import { Link } from "react-router"
+import PasswordInputToggler from "./passwordInputToggler"
 
 export function LoginForm({
   className,
@@ -39,7 +40,7 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <PasswordInputToggler/>
               </div>
               <Button type="submit" className="w-full">
                 Login
