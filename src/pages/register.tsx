@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/components/registerForm";
+import { RegisterForm } from "@/components/modules/authentications/registerForm";
 
 export default function LoginPage() {
   return (
@@ -10,16 +10,15 @@ export default function LoginPage() {
   );
 }
 
-
 /**
- * 1. confiuge store in redux/store.ts 
+ * 1. confiuge store in redux/store.ts
  * 2. Connecting store with app => add provider with store props in main.ts
  * 2. create slide (not when you directly connecting with databse)
  * ........
  * .......
  * 3.create hook folder in redux
  * 4. create a new folder name feature - for adding all features
- * 5. create folder named auth as a feature with auth.api.ts 
+ * 5. create folder named auth as a feature with auth.api.ts
  * 6. create a base api in featue
  * 7. configure baseApi
  */
