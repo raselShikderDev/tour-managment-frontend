@@ -17,11 +17,17 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import image from "@/assets/images/login.jpg";
 import PasswordInputToggler from "./passwordInputToggler";
+import { useRegisterMutation } from "@/redux/features/auth/auth.api";
+
+
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const [register] = useRegisterMutation()
+
   const zodSchema = z.object({
     name: z.string().min(3, {
       message: "Username must be at least 2 characters.",
@@ -51,8 +57,13 @@ export function RegisterForm({
     },
   });
 
-  const onSubmit = (data: z.infer<typeof zodSchema>) => {
+
+  const onSubmit = async (data: z.infer<typeof zodSchema>) => {
     console.log(data);
+    const result = await register(data).unwrap()
+
+    console.log(result);
+
   };
 
   return (
