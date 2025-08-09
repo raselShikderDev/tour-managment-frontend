@@ -155,7 +155,7 @@ export function RegisterForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button className="cursor-pointer" type="submit">Submit</Button>
               </Form>
               <div className="text-center text-sm">
                 Already have an account? <Link to={"/sign-in"}>Log In</Link>
