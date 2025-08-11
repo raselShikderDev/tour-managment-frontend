@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { baseApi } from "@/redux/baseApi";
 import type {
-  ILogin,
+  // ILogin,
   IResponse,
-  ISendOtp,
-  ILoginResonseData,
+  // ISendOtp,
+  // ILoginResonseData,
   IRegisterUser,
   IRegisterUserResponse,
 } from "@/types";
@@ -27,7 +26,7 @@ const authApi = baseApi.injectEndpoints({
         }),
       }
     ),
-    sendOtp: builder.mutation<IResponse<null>, ISendOtp>({
+    sendOtp: builder.mutation({
       query: (userInfo) => ({
         url: "/otp/send",
         method: "POST",

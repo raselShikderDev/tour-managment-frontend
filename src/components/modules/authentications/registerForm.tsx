@@ -71,7 +71,7 @@ export function RegisterForm({
         toast.error("Sign up faild");
       }
       toast.success("User created uccessfully");
-      navigator("/verify");
+      navigator(`/verify`, {state:data.email});
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message);

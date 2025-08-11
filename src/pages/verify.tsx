@@ -25,6 +25,7 @@ import { useSendOtpMutation } from "@/redux/features/auth/auth.api";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
+import { toast } from "sonner";
 import z from "zod";
 
 const Verify = () => {
@@ -32,7 +33,7 @@ const Verify = () => {
   const naviator = useNavigate();
   const [email] = useState(location.state);
   const [confrimed, setConfrimed] = useState(false);
-  const [sendOtp] = useSendOtpMutation()
+  const [sendOtp] = useSendOtpMutation();
 
   const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -50,18 +51,25 @@ const Verify = () => {
     console.log(data);
   };
 
-  // useEffect(()=>{
-  //   if (!email) {
-  //    naviator("/")
-  // }
-  // },[email, naviator])
+  useEffect(() => {
+    if (!email) {
+      naviator("/");
+    }
+  }, [email, naviator]);
 
+  console.log(`Email in verify page: ${email}`);
 
-  const handleSendOtp = () => {
-    setConfrimed(true);
-    sendOtp(email)
-    console.log("Otp send");
-    
+  const handleSendOtp = async () => {
+    try {
+      console.log("Otp sending to email");
+      const res = await sendOtp({email:email}).unwrap();
+      if (res.success) {
+        toast.success("OTP Sent");
+        setConfrimed(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -104,7 +112,9 @@ const Verify = () => {
                     </FormItem>
                   )}
                 />
-                <Button className="cursor-pointer" type="submit">Submit</Button>
+                <Button className="cursor-pointer" type="submit">
+                  Submit
+                </Button>
               </form>
             </Form>
           </CardContent>
@@ -118,7 +128,10 @@ const Verify = () => {
             </CardDescription>
           </CardHeader>
           <CardFooter className="flex justify-end">
-            <Button onClick={handleSendOtp} className="w-[300px] cursor-pointer">
+            <Button
+              onClick={handleSendOtp}
+              className="w-[300px] cursor-pointer"
+            >
               Confirm
             </Button>
           </CardFooter>
