@@ -21,7 +21,10 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useSendOtpMutation } from "@/redux/features/auth/auth.api";
+import {
+  useSendOtpMutation,
+  useVerifyOtpMutation,
+} from "@/redux/features/auth/auth.api";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
@@ -34,35 +37,49 @@ const Verify = () => {
   const [email] = useState(location.state);
   const [confrimed, setConfrimed] = useState(false);
   const [sendOtp] = useSendOtpMutation();
+  const [verifyOtp] = useVerifyOtpMutation();
 
   const FormSchema = z.object({
-    pin: z.string().min(6, {
+    otp: z.string().min(6, {
       message: "Your one-time password must be 6 characters.",
     }),
   });
 
+  // Default value of otp
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
-      pin: "",
+      otp: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
+  // handling verify otp and checking otp from database of redis
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    console.log(`Data : ${data.otp}`);
+
+    try {
+      const res = await verifyOtp({ email: email, otp: data.otp }).unwrap();
+      if (res.success) {
+        toast.success("Successfully verified");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error.message);
+    }
   };
 
+  // handling navigtor and protecting if someone want to visit verify pasge without login or register page
   useEffect(() => {
     if (!email) {
       naviator("/");
     }
   }, [email, naviator]);
 
-  console.log(`Email in verify page: ${email}`);
-
+  // Handling send otp to email after signin and signup if user is not verified
   const handleSendOtp = async () => {
     try {
       console.log("Otp sending to email");
-      const res = await sendOtp({email:email}).unwrap();
+      const res = await sendOtp({ email: email }).unwrap();
       if (res.success) {
         toast.success("OTP Sent");
         setConfrimed(true);
@@ -90,7 +107,7 @@ const Verify = () => {
               >
                 <FormField
                   control={form.control}
-                  name="pin"
+                  name="otp"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>One-Time Password</FormLabel>
