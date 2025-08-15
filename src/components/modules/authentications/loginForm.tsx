@@ -56,14 +56,18 @@ export function LoginForm({
       const result = await login(payload).unwrap();
       console.log(result);
       if (!result.success) {
-        toast.error("Login up faild");
+        toast.error("Login faild");
       }
       toast.success("Successfully Login");
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error(error.message);
-      if (error.status === 401) {
+      console.log(error);
+      
+      if (error.data.message === "Password is invalid") {
+        toast.error("Your Password is notvalid");
+      }
+      if (error.data.message === "User is not verified") {
         toast.error("Your account is not verified.");
         navigator("/verify", { state: data.email });
       }
@@ -113,7 +117,9 @@ export function LoginForm({
                       </FormItem>
                     )}
                   />
-                  <Button className="cursor-pointer" type="submit">LogIn</Button>
+                  <Button className="cursor-pointer" type="submit">
+                    LogIn
+                  </Button>
                 </Form>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">

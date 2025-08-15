@@ -55,11 +55,11 @@ const Verify = () => {
   // handling verify otp and checking otp from database of redis
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log(`Data : ${data.otp}`);
-
+    const toastId = "Vrifying OTP"
     try {
       const res = await verifyOtp({ email: email, otp: data.otp }).unwrap();
       if (res.success) {
-        toast.success("Successfully verified");
+        toast.success("Successfully verified", {id:toastId});
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -77,11 +77,12 @@ const Verify = () => {
 
   // Handling send otp to email after signin and signup if user is not verified
   const handleSendOtp = async () => {
+    const toastId = "Sending OTP"
     try {
       console.log("Otp sending to email");
       const res = await sendOtp({ email: email }).unwrap();
       if (res.success) {
-        toast.success("OTP Sent");
+        toast.success("OTP Sent", {id:toastId});
         setConfrimed(true);
       }
     } catch (error) {
