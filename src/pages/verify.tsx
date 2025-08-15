@@ -21,6 +21,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { cn } from "@/lib/utils";
 import {
   useSendOtpMutation,
   useVerifyOtpMutation,
@@ -38,6 +39,7 @@ const Verify = () => {
   const [confrimed, setConfrimed] = useState(false);
   const [sendOtp] = useSendOtpMutation();
   const [verifyOtp] = useVerifyOtpMutation();
+  const [timer, setTimer] = useState(5);
 
   const FormSchema = z.object({
     otp: z.string().min(6, {
@@ -54,16 +56,15 @@ const Verify = () => {
 
   // handling verify otp and checking otp from database of redis
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    console.log(`Data : ${data.otp}`);
-    const toastId = "Vrifying OTP"
+    const toastId = "Vrifying OTP";
     try {
       const res = await verifyOtp({ email: email, otp: data.otp }).unwrap();
       if (res.success) {
-        toast.success("Successfully verified", {id:toastId});
+        toast.success("Successfully verified", { id: toastId });
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error(error);
+      toast.error("Verification faild");
       throw new Error(error.message);
     }
   };
@@ -75,15 +76,28 @@ const Verify = () => {
     }
   }, [email, naviator]);
 
+  // Use effect for resending code
+  useEffect(() => {
+    if (!email && !confrimed) {
+      return;
+    }
+    if (email && confrimed) {
+      const timeId = setInterval(() => {
+        setTimer((prev) => prev > 0 ? prev - 1 : 0);
+      }, 1000);
+      return () => clearInterval(timeId);
+    }
+  }, [email, confrimed]);
+
   // Handling send otp to email after signin and signup if user is not verified
   const handleSendOtp = async () => {
-    const toastId = "Sending OTP"
+    const toastId = "Sending OTP";
     try {
-      console.log("Otp sending to email");
       const res = await sendOtp({ email: email }).unwrap();
       if (res.success) {
-        toast.success("OTP Sent", {id:toastId});
+        toast.success("OTP Sent", { id: toastId });
         setConfrimed(true);
+        setTimer(5);
       }
     } catch (error) {
       console.error(error);
@@ -104,7 +118,7 @@ const Verify = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-2/3 space-y-6"
+                className=" space-y-6"
               >
                 <FormField
                   control={form.control}
@@ -124,15 +138,32 @@ const Verify = () => {
                           </InputOTPGroup>
                         </InputOTP>
                       </FormControl>
-                      <FormDescription>
+                      <FormDescription className="w-fit">
                         Please enter the one-time password sent to your phone.
                       </FormDescription>
+                      <div className="text-center">
+                        <Button
+                          onClick={handleSendOtp}
+                          disabled={timer !== 0}
+                          className={cn("p-0, m-0", {
+                            "cursor-pointer": timer === 0,
+                            "text-gray-500": timer !== 0,
+                          })}
+                          type="button"
+                          variant={"link"}
+                        >
+                          Resend OTP :
+                        </Button>
+                        {timer}
+                      </div>
                     </FormItem>
                   )}
                 />
-                <Button className="cursor-pointer" type="submit">
-                  Submit
-                </Button>
+                <div className="text-right">
+                  <Button className="cursor-pointer" type="submit">
+                    Submit
+                  </Button>
+                </div>
               </form>
             </Form>
           </CardContent>
