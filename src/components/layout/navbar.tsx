@@ -1,26 +1,47 @@
-import Logo from "@/assets/icons/logo"
-import { Button } from "@/components/ui/button"
-import {Link} from "react-router"
+import Logo from "@/assets/icons/logo";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { ModeToggle } from "./mode-toggler"
+} from "@/components/ui/popover";
+import { ModeToggle } from "./mode-toggler";
+import {
+  authApi,
+  useGetMeQuery,
+  useLogOutMutation,
+} from "@/redux/features/auth/auth.api";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home"},
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-]
+];
 
 export default function Navbar() {
+  const { data } = useGetMeQuery(undefined);
+  const [logOut] = useLogOutMutation();
+
+  const dispatch = useDispatch();
+console.log(data);
+
+  console.log(data?.data?.email);
+
+  const handleLogout = async () => {
+    await logOut(undefined);
+    toast.success("Successfullly logOut")
+    dispatch(authApi.util.resetApiState());
+  };
+
   return (
     <header className="border-b px-4">
       <div className="mx-auto container flex h-16 items-center justify-between gap-4">
@@ -66,9 +87,7 @@ export default function Navbar() {
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
-                        className="py-1.5"
-                      >
+                      <NavigationMenuLink className="py-1.5">
                         <Link to={link.href}>{link.label}</Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -87,7 +106,8 @@ export default function Navbar() {
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
                   <NavigationMenuItem key={index}>
-                    <NavigationMenuLink asChild
+                    <NavigationMenuLink
+                      asChild
                       className="text-muted-foreground hover:text-primary py-1.5 font-medium"
                     >
                       <Link to={link.href}>{link.label}</Link>
@@ -100,12 +120,23 @@ export default function Navbar() {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2">
-          <ModeToggle/>
-          <Button asChild className="text-sm">
-           <Link to="/sign-in">Sign In</Link>
-          </Button>
+          <ModeToggle />
+          {data?.data?.email && (
+            <Button
+              onClick={handleLogout}
+              variant={"outline"}
+              className="text-sm cursor-pointer"
+            >
+              LogOut
+            </Button>
+          )}
+          {!data?.data?.email && (
+            <Button asChild className="text-sm cursor-pointer">
+              <Link to="/sign-in">Sign In</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
-  )
+  );
 }

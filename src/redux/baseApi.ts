@@ -5,6 +5,10 @@ import axiosBaseQuery from "./axiosBaseQuery";
 export const baseApi = createApi({
   reducerPath: "tourBaseApi",
   baseQuery: axiosBaseQuery(),
+  // baseQuery:fetchBaseQuery({
+  //   baseUrl:config.baseUrl,
+  //   credentials:"include",
+  // })
   endpoints: () => ({}),
 });
 
