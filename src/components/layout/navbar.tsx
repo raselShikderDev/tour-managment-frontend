@@ -15,30 +15,33 @@ import {
 import { ModeToggle } from "./mode-toggler";
 import {
   authApi,
-  useGetMeQuery,
   useLogOutMutation,
+  useUserInfoQuery,
 } from "@/redux/features/auth/auth.api";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
+import { role } from "@/constants/role";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Home", role:"PUBLIC" },
+  { href: "/about", label: "About", role:"PUBLIC"  },
+  { href: "/contact", label: "Contact", role:"PUBLIC"  },
+  { href: "/admin", label: "Dashboard", role:role.admin },
+  { href: "/user", label: "Dashboard", role:role.user  },
 ];
 
 export default function Navbar() {
-  const { data } = useGetMeQuery(null);
+
+  const { data } = useUserInfoQuery(undefined);
   const [logOut] = useLogOutMutation();
 
   const dispatch = useDispatch();
-console.log(data);
 
-  console.log(data?.data?.email);
 
   const handleLogout = async () => {
     await logOut(null);
-    toast.success("Successfullly logOut")
+    toast.success("Successfullly logOut");
     dispatch(authApi.util.resetApiState());
   };
 
@@ -105,14 +108,24 @@ console.log(data);
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
+                  <>
+                  {link.role === "PUBLIC" && <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       asChild
                       className="text-muted-foreground hover:text-primary py-1.5 font-medium"
                     >
                       <Link to={link.href}>{link.label}</Link>
                     </NavigationMenuLink>
-                  </NavigationMenuItem>
+                  </NavigationMenuItem>}
+                  {link.role === data?.data?.role && <NavigationMenuItem key={index}>
+                    <NavigationMenuLink
+                      asChild
+                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                    >
+                      <Link to={link.href}>{link.label}</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>}
+                  </>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
@@ -121,7 +134,13 @@ console.log(data);
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          {data?.data?.email && (
+          {data?.data?.email && <Button onClick={handleLogout} variant={"outline"} className="text-sm cursor-pointer">
+            LogOut
+          </Button>}
+         {!data?.data?.email && <Button asChild className="text-sm cursor-pointer">
+            <Link to="/sign-in">LogIn</Link>
+          </Button>}
+          {/* {data?.data?.email && (
             <Button
               onClick={handleLogout}
               variant={"outline"}
@@ -134,7 +153,7 @@ console.log(data);
             <Button asChild className="text-sm cursor-pointer">
               <Link to="/sign-in">Sign In</Link>
             </Button>
-          )}
+          )} */}
         </div>
       </div>
     </header>

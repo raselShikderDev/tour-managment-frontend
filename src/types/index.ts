@@ -18,3 +18,5 @@ export interface ISideBarItem{
     component:ComponentType,
   }[]
 }
+
+export type TRole = "USER" | "GUIDE" |  "ADMIN" |  "SUPER_ADMIN"

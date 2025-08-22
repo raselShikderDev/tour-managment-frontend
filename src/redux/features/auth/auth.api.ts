@@ -6,7 +6,7 @@ import type {
   // ILoginResonseData,
   IRegisterUser,
   IRegisterUserResponse,
-  IGetMeResponse,
+  // IGetMeResponse,
   verifyOTP,
   ILogin,
   ILoginResonseData,
@@ -50,12 +50,12 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
-    getMe: builder.query<IResponse<IGetMeResponse>, null>({
+    // <IResponse<IGetMeResponse>, null>
+    userInfo: builder.query({
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
-      //  providesTags: ["USER"],
     }),
   }),
 });
@@ -65,6 +65,6 @@ export const {
   useLoginMutation,
   useSendOtpMutation,
   useVerifyOtpMutation,
-  useGetMeQuery,
+  useUserInfoQuery,
   useLogOutMutation,
 } = authApi;
