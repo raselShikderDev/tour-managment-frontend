@@ -37,7 +37,7 @@ export interface ILogin{
 }
 
 export interface ILoginResonseData {
-  accesToken: string; // note: seems like this should be "accessToken"
+  accesToken: string;
   refreshToken: string;
   user: {
     $__: {
@@ -54,6 +54,8 @@ export interface ILoginResonseData {
           auths: string;
           createdAt: string;
           updatedAt: string;
+          address: string;
+          phone: string;
         };
         states: {
           require: Record<string, unknown>;
@@ -70,6 +72,8 @@ export interface ILoginResonseData {
             auths: boolean;
             createdAt: boolean;
             updatedAt: boolean;
+            address: boolean;
+            phone: boolean;
           };
         };
       };
@@ -81,16 +85,43 @@ export interface ILoginResonseData {
       name: string;
       email: string;
       password: string;
-      role: string;
+      role: "USER" | "ADMIN" | string;
       isDeleted: boolean;
-      isActive: string;
+      isActive: "ACTIVE" | "INACTIVE" | string;
       isVerified: boolean;
-      auths: Array<{
+      auths: {
         provider: string;
         providerId: string;
-      }>;
-      createdAt: string; // ISO date string
-      updatedAt: string; // ISO date string
+      }[];
+      createdAt: string; // ISO date
+      updatedAt: string; // ISO date
+      address: string;
+      phone: string;
     };
   };
+}
+
+
+export interface IGetMeResponse {
+    _id: string;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    isDeleted: boolean;
+    isActive: string;
+    isVerified: boolean;
+    auths: {
+      provider: string;
+      providerId: string;
+    }[];
+    createdAt: string; 
+    updatedAt: string; 
+    address: string;
+    phone: string;
+  };
+
+  export interface verifyOTP {
+  email: string
+  otp: string
 }

@@ -28,7 +28,7 @@ const navigationLinks = [
 ];
 
 export default function Navbar() {
-  const { data } = useGetMeQuery(undefined);
+  const { data } = useGetMeQuery(null);
   const [logOut] = useLogOutMutation();
 
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ console.log(data);
   console.log(data?.data?.email);
 
   const handleLogout = async () => {
-    await logOut(undefined);
+    await logOut(null);
     toast.success("Successfullly logOut")
     dispatch(authApi.util.resetApiState());
   };

@@ -6,11 +6,15 @@ import type {
   // ILoginResonseData,
   IRegisterUser,
   IRegisterUserResponse,
+  IGetMeResponse,
+  verifyOTP,
+  ILogin,
+  ILoginResonseData,
 } from "@/types";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
+    login: builder.mutation<IResponse<ILoginResonseData>, ILogin>({
       query: (userInfo) => ({
         url: "/auth/login",
         method: "POST",
@@ -33,20 +37,20 @@ export const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
-    verifyOtp: builder.mutation({
+    verifyOtp: builder.mutation<IResponse<null>, verifyOTP>({
       query: (userInfo) => ({
         url: "/otp/verify",
         method: "POST",
         data: userInfo,
       }),
     }),
-    logOut: builder.mutation({
+    logOut: builder.mutation<IResponse<null>, null>({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
       }),
     }),
-    getMe: builder.query({
+    getMe: builder.query<IResponse<IGetMeResponse>, null>({
       query: () => ({
         url: "/user/me",
         method: "GET",

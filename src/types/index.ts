@@ -1,4 +1,4 @@
-export type {ISendOtp,ILogin, ILoginResonseData, IRegisterUserResponse, IRegisterUser} from "@/types/auth.type"
+export type {ISendOtp,ILogin, ILoginResonseData, IRegisterUserResponse, IRegisterUser, IGetMeResponse, verifyOTP} from "@/types/auth.type"
 
 
 export interface IResponse<T> {
