@@ -33,18 +33,17 @@ export function AddTourTypeModal() {
     },
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onsubmit = async (data: any) =>{
-    console.log(data);
-    const res = await addTourType({name:data.name}).unwrap()
+  const onsubmit = async (data: {name:string}) =>{
+    try {
+      const res = await addTourType({name:data.name}).unwrap()
     if(res.success){
       toast.success("Tour type added")
       form.reset()
     }
-    // if (res.error) {
-    //   console.log(res.error);
-    //   toast.error("Adding tour type is faild")
-    // }
+    } catch (error) {
+      console.error(error);
+      toast.error("Adding tour type is faild")
+    }
   }
 
   return (
@@ -65,7 +64,7 @@ export function AddTourTypeModal() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="" {...field} value={field.value || ""} />
+                      <Input placeholder="" {...field} />
                     </FormControl>
                     <FormDescription className="sr-only">
                       Add tour type
@@ -84,6 +83,7 @@ export function AddTourTypeModal() {
           </DialogFooter>
         </DialogContent>
       </form>
+      
     </Dialog>
   );
 }

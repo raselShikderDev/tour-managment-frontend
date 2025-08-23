@@ -4,6 +4,7 @@ export type {ISendOtp,ILogin, ILoginResonseData, IRegisterUserResponse, IRegiste
 
 export type {ICreateTourType, ICreateTourTypeResponse, IGetAllTourTypeResponse} from "@/types/tour.types"
 
+export type {IAddDivision} from "@/types/division.type"
 
 export interface IResponse<T> {
   statusCode: number;
