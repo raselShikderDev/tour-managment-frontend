@@ -21,23 +21,22 @@ import {
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { role } from "@/constants/role";
+import React from "react";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home", role:"PUBLIC" },
-  { href: "/about", label: "About", role:"PUBLIC"  },
-  { href: "/contact", label: "Contact", role:"PUBLIC"  },
-  { href: "/admin", label: "Dashboard", role:role.admin },
-  { href: "/user", label: "Dashboard", role:role.user  },
+  { href: "/", label: "Home", role: "PUBLIC" },
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/contact", label: "Contact", role: "PUBLIC" },
+  { href: "/admin", label: "Dashboard", role: role.admin },
+  { href: "/user", label: "Dashboard", role: role.user },
 ];
 
 export default function Navbar() {
-
-  const { data } = useUserInfoQuery(null);
+  const { data, isLoading } = useUserInfoQuery(null);
   const [logOut] = useLogOutMutation();
 
   const dispatch = useDispatch();
-
 
   const handleLogout = async () => {
     await logOut(null);
@@ -90,7 +89,7 @@ export default function Navbar() {
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink className="py-1.5">
+                      <NavigationMenuLink asChild className="py-1.5">
                         <Link to={link.href}>{link.label}</Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -108,24 +107,28 @@ export default function Navbar() {
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
-                  <>
-                  {link.role === "PUBLIC" && <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      asChild
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      <Link to={link.href}>{link.label}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>}
-                  {link.role === data?.data?.role && <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      asChild
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      <Link to={link.href}>{link.label}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>}
-                  </>
+                  <React.Fragment key={index}>
+                    {link.role === "PUBLIC" && (
+                      <NavigationMenuItem>
+                        <NavigationMenuLink
+                          asChild
+                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                        >
+                          <Link to={link.href}>{link.label}</Link>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    )}
+                    {link.role === data?.data?.role && (
+                      <NavigationMenuItem>
+                        <NavigationMenuLink
+                          asChild
+                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                        >
+                          <Link to={link.href}>{link.label}</Link>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    )}
+                  </React.Fragment>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
@@ -134,13 +137,7 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          {data?.data?.email && <Button onClick={handleLogout} variant={"outline"} className="text-sm cursor-pointer">
-            LogOut
-          </Button>}
-         {!data?.data?.email && <Button asChild className="text-sm cursor-pointer">
-            <Link to="/sign-in">LogIn</Link>
-          </Button>}
-          {/* {data?.data?.email && (
+          {!isLoading && data?.data?.email ? (
             <Button
               onClick={handleLogout}
               variant={"outline"}
@@ -148,12 +145,11 @@ export default function Navbar() {
             >
               LogOut
             </Button>
-          )}
-          {!data?.data?.email && (
+          ) : (
             <Button asChild className="text-sm cursor-pointer">
-              <Link to="/sign-in">Sign In</Link>
+              <Link to="/sign-in">LogIn</Link>
             </Button>
-          )} */}
+          )}
         </div>
       </div>
     </header>

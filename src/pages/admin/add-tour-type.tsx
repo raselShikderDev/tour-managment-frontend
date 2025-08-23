@@ -1,5 +1,6 @@
 import { AddTourTypeModal } from "@/components/modules/admin/tourTypes/addTourTypeModal";
 import { Button } from "@/components/ui/button";
+import { DeleteModalConfirmation } from "@/components/ui/deleteModalConfirmation";
 import {
   Table,
   TableBody,
@@ -8,12 +9,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useTourInfoQuery } from "@/redux/features/tour/tour.api";
+import { useRemoveTourTypeMutation, useTourInfoQuery } from "@/redux/features/tour/tour.api";
 import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 const AddTourType = () => {
   const { data } = useTourInfoQuery(undefined);
+  const [removeTourType] = useRemoveTourTypeMutation()
   console.log("data in add tour type page:", data);
+
+  const handleTourTypeDeletion = async (tourTypeId:string)=>{
+    const res = await removeTourType(tourTypeId).unwrap()
+    console.log(res);
+    const tourId = toast.loading("Deleting tour type")
+    if (res.success) {
+      toast.success("Tour type deleted", {id:tourId})
+    }
+  }
+
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
       <div className="flex justify-between my-8">
@@ -24,18 +37,20 @@ const AddTourType = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Tour types</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="w-[100px] text-muted-foreground">Tour types</TableHead>
+              <TableHead className="text-right text-muted-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
            {
-            data?.data.map((item:{name:string}, index:number)=>( <TableRow key={index}>
+            data?.data.map((item:{_id:string, name:string}, index:number)=>( <TableRow key={index}>
               <TableCell className="font-medium w-full">{item?.name}</TableCell>
               <TableCell className="font-medium">
+                <DeleteModalConfirmation onConfirm={()=> handleTourTypeDeletion(item._id)}>
                 <Button className="cursor-pointer" size={"sm"}>
                   <Trash2 />
                 </Button>
+                </DeleteModalConfirmation>
               </TableCell>
             </TableRow>))
            }
