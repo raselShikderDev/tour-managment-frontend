@@ -23,42 +23,46 @@ export const router = createBrowserRouter([
         Component: About,
         path: "about",
       },
-      {
-        Component: Contact,
-        path: "contact",
-      },
-      {
-        Component: withAuth(Dashboardlayout, role.superAdmin as TRole || role.admin as TRole),
-        path: "/admin",
-        children: [
-          { index: true, element: <Navigate to={"/admin/analytics"} /> },
-          ...generateRoutes(adminSidebarItems),
-        ],
-      },
-      {
-        Component: withAuth(Dashboardlayout, role.user as TRole),
-        path: "/user",
-        children: [
-          { index: true, element: <Navigate to={"/user/bookings"} /> },
-          ...generateRoutes(userSidebarItems),
-        ],
-      },
-      {
-        Component: LoginPage,
-        path: "sign-in",
-      },
-      {
-        Component: RegisterForm,
-        path: "sign-up",
-      },
-      {
-        Component: Verify,
-        path: "verify",
-      },
-      {
-        Component: Unathorized,
-        path: "unathorized",
-      },
     ],
+  },
+  {
+    Component: withAuth(
+      Dashboardlayout,
+      (role.superAdmin as TRole) || (role.admin as TRole)
+    ),
+    path: "/admin",
+    children: [
+      { index: true, element: <Navigate to={"/admin/analytics"} /> },
+      ...generateRoutes(adminSidebarItems),
+    ],
+  },
+  {
+    Component: withAuth(Dashboardlayout, role.user as TRole),
+    path: "/user",
+    children: [
+      { index: true, element: <Navigate to={"/user/bookings"} /> },
+      ...generateRoutes(userSidebarItems),
+    ],
+  },
+  {
+    Component: LoginPage,
+    path: "sign-in",
+  },
+  {
+    Component: RegisterForm,
+    path: "sign-up",
+  },
+  {
+    Component: Verify,
+    path: "verify",
+  },
+  {
+    Component: Unathorized,
+    path: "unathorized",
+  },
+
+  {
+    Component: Contact,
+    path: "contact",
   },
 ]);

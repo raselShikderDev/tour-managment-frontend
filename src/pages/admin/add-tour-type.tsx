@@ -16,7 +16,7 @@ const AddTourType = () => {
   console.log("data in add tour type page:", data);
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
-      <div className="flex justify-center my-8">
+      <div className="flex justify-between my-8">
         <h1 className="text-xl font-semibold">Tour Type</h1>
         <AddTourTypeModal/>
       </div>
@@ -24,10 +24,8 @@ const AddTourType = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Invoice</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead className="w-[100px]">Tour types</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -35,8 +33,8 @@ const AddTourType = () => {
             data?.data.map((item:{name:string}, index:number)=>( <TableRow key={index}>
               <TableCell className="font-medium w-full">{item?.name}</TableCell>
               <TableCell className="font-medium">
-                <Button size={"sm"}>
-                  <Trash2/>
+                <Button className="cursor-pointer" size={"sm"}>
+                  <Trash2 />
                 </Button>
               </TableCell>
             </TableRow>))

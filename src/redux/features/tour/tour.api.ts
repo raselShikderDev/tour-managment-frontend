@@ -1,12 +1,15 @@
 import { baseApi } from "@/redux/baseApi";
-// import type {
-//   IResponse,
-// } from "@/types";
+import type {
+  ICreateTourType,
+  ICreateTourTypeResponse,
+  IGetAllTourTypeResponse,
+  IResponse,
+} from "@/types";
 
 
 export const tourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    addTourType: builder.mutation({
+    addTourType: builder.mutation<IResponse<ICreateTourTypeResponse>, ICreateTourType>({
       query: (tourInfo) => ({
         url: "/tour/create-tour-type",
         method: "POST",
@@ -15,13 +18,13 @@ export const tourApi = baseApi.injectEndpoints({
       invalidatesTags:["TOUR"],
     }),
     
-    tourInfo: builder.query({
+    tourInfo: builder.query<IGetAllTourTypeResponse, void>({
       query: () => ({
-        url: "/tour//tour-types",
+        url: "/tour/tour-types",
         method: "GET",
       }),
       providesTags:["TOUR"],
-      transformResponse:(response)=> response.data
+      transformResponse:(response:IResponse<IGetAllTourTypeResponse>)=> response.data
     }),
   }),
 });

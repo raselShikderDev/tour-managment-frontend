@@ -14,7 +14,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -40,18 +39,23 @@ export function AddTourTypeModal() {
     const res = await addTourType({name:data.name}).unwrap()
     if(res.success){
       toast.success("Tour type added")
+      form.reset()
     }
+    // if (res.error) {
+    //   console.log(res.error);
+    //   toast.error("Adding tour type is faild")
+    // }
   }
 
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline">Add Tour Type</Button>
+          <Button variant="outline" className="cursor-pointer">Add Tour Type</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Add Your Type</DialogTitle>
+            <DialogTitle>Add tour Type</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form id="add-tour-type" onSubmit={form.handleSubmit(onsubmit)}>
@@ -60,12 +64,11 @@ export function AddTourTypeModal() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Add Tour Type</FormLabel>
                     <FormControl>
                       <Input placeholder="" {...field} value={field.value || ""} />
                     </FormControl>
                     <FormDescription className="sr-only">
-                      This is your email
+                      Add tour type
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -75,9 +78,9 @@ export function AddTourTypeModal() {
           </Form>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button className="cursor-pointer" variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit" form="add-tour-type">Save changes</Button>
+            <Button className="cursor-pointer" type="submit" form="add-tour-type">Save changes</Button>
           </DialogFooter>
         </DialogContent>
       </form>
