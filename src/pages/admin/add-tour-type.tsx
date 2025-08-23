@@ -9,51 +9,64 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useRemoveTourTypeMutation, useTourInfoQuery } from "@/redux/features/tour/tour.api";
+import {
+  useRemoveTourTypeMutation,
+  useTourInfoQuery,
+} from "@/redux/features/tourtypes/tourtypes.api";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 const AddTourType = () => {
   const { data } = useTourInfoQuery(undefined);
-  const [removeTourType] = useRemoveTourTypeMutation()
+  const [removeTourType] = useRemoveTourTypeMutation();
   console.log("data in add tour type page:", data);
 
-  const handleTourTypeDeletion = async (tourTypeId:string)=>{
-    const res = await removeTourType(tourTypeId).unwrap()
+  const handleTourTypeDeletion = async (tourTypeId: string) => {
+    const res = await removeTourType(tourTypeId).unwrap();
     console.log(res);
-    const tourId = toast.loading("Deleting tour type")
+    const tourId = toast.loading("Deleting tour type");
     if (res.success) {
-      toast.success("Tour type deleted", {id:tourId})
+      toast.success("Tour type deleted", { id: tourId });
     }
-  }
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
       <div className="flex justify-between my-8">
         <h1 className="text-xl font-semibold">Tour Type</h1>
-        <AddTourTypeModal/>
+        <AddTourTypeModal />
       </div>
       <div className="border border-muted rounded-md">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px] text-muted-foreground">Tour types</TableHead>
-              <TableHead className="text-right text-muted-foreground">Actions</TableHead>
+              <TableHead className="w-[100px] text-muted-foreground">
+                Tour types
+              </TableHead>
+              <TableHead className="text-right text-muted-foreground">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-           {
-            data?.data.map((item:{_id:string, name:string}, index:number)=>( <TableRow key={index}>
-              <TableCell className="font-medium w-full">{item?.name}</TableCell>
-              <TableCell className="font-medium">
-                <DeleteModalConfirmation onConfirm={()=> handleTourTypeDeletion(item._id)}>
-                <Button className="cursor-pointer" size={"sm"}>
-                  <Trash2 />
-                </Button>
-                </DeleteModalConfirmation>
-              </TableCell>
-            </TableRow>))
-           }
+            {data?.data.map(
+              (item: { _id: string; name: string }, index: number) => (
+                <TableRow key={index}>
+                  <TableCell className="font-medium w-full">
+                    {item?.name}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    <DeleteModalConfirmation
+                      onConfirm={() => handleTourTypeDeletion(item._id)}
+                    >
+                      <Button className="cursor-pointer" size={"sm"}>
+                        <Trash2 />
+                      </Button>
+                    </DeleteModalConfirmation>
+                  </TableCell>
+                </TableRow>
+              )
+            )}
           </TableBody>
         </Table>
       </div>

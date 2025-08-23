@@ -15,7 +15,7 @@ export const tourApi = baseApi.injectEndpoints({
         method: "POST",
         data: tourInfo,
       }),
-      invalidatesTags:["TOUR"],
+      invalidatesTags:["TOURTYPE"],
     }),
 
     removeTourType: builder.mutation<IResponse<null>, string>({
@@ -23,7 +23,7 @@ export const tourApi = baseApi.injectEndpoints({
         url: `/tour/tour-types/${tourTypeId}`,
         method: "DELETE",
       }),
-      invalidatesTags:["TOUR"],
+      invalidatesTags:["TOURTYPE"],
     }),
     
     tourInfo: builder.query<IGetAllTourTypeResponse, void>({
@@ -31,7 +31,7 @@ export const tourApi = baseApi.injectEndpoints({
         url: "/tour/tour-types",
         method: "GET",
       }),
-      providesTags:["TOUR"],
+      providesTags:["TOURTYPE"],
       transformResponse:(response:IResponse<IGetAllTourTypeResponse>)=> response.data
     }),
   }),

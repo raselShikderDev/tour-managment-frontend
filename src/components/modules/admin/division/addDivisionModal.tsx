@@ -64,7 +64,6 @@ export function AddDivisionModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <form>
         <DialogTrigger asChild>
           <Button variant="default" className="cursor-pointer">
             Add divison
@@ -128,7 +127,6 @@ export function AddDivisionModal() {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </form>
     </Dialog>
   );
 }
