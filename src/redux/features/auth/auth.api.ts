@@ -1,12 +1,10 @@
 import { baseApi } from "@/redux/baseApi";
 import type {
-  // ILogin,
   IResponse,
   ISendOtp,
-  // ILoginResonseData,
   IRegisterUser,
   IRegisterUserResponse,
-  // IGetMeResponse,
+  IGetMeResponse,
   verifyOTP,
   ILogin,
   ILoginResonseData,
@@ -20,6 +18,7 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         data: userInfo,
       }),
+      invalidatesTags:["USER"],
     }),
     register: builder.mutation<IResponse<IRegisterUserResponse>, IRegisterUser>(
       {
@@ -50,12 +49,12 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
-    // <IResponse<IGetMeResponse>, null>
-    userInfo: builder.query({
+    userInfo: builder.query<IResponse<IGetMeResponse>, null>({
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
+      providesTags:["USER"]
     }),
   }),
 });
