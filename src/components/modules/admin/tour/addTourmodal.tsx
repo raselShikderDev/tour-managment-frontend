@@ -15,6 +15,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -38,7 +39,7 @@ import { useTourInfoQuery } from "@/redux/features/tourtypes/tourtypes.api";
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { format, formatISO } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Plus, Trash2 } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import MulptipleImageUploader from "@/components/mulptipleImageUploader";
 import { useState } from "react";
@@ -55,7 +56,7 @@ export function AddTourModal() {
     useGetAllDivisonsQuery(null);
   const { data: tourTypesData, isLoading: tourTypeLoading } =
     useTourInfoQuery();
-  const [addTour, {isLoading:addTourLoading}] = useAddTourMutation()
+  const [addTour, { isLoading: addTourLoading }] = useAddTourMutation();
 
   //   const addTourSchema = z.object({
   //     title:z.string(),
@@ -79,42 +80,70 @@ export function AddTourModal() {
       description: "",
       startDate: "",
       endDate: "",
+      included: [{ value: "" }],
+      excluded: [{ value: "" }],
+      amenities: [{ value: "" }],
+      tourPlan: [{ value: "" }],
     },
   });
 
 
-  const {fields, append, remove} = useFieldArray({
-    control:form.control,
-  })
+// Making dynamic feild for excluded
+  const { fields:feildsIncluded, append:appnedInclued, remove:removeInclued } = useFieldArray({
+    control: form.control,
+    name: "included",
+  });
+
+  // Making dynamic feild for included
+  const { fields:feildsExcluded, append:appnedExcluded, remove:removeIExcluded } = useFieldArray({
+    control: form.control,
+    name: "excluded",
+  });
+
+// Making dynamic feild for // Making dynamic feild for included
+  const { fields:feildsAmenities, append:appnedAmenities, remove:removeAmenities } = useFieldArray({
+    control: form.control,
+    name: "amenities",
+  });
+
+// Making dynamic feild for tourPlan
+  const { fields:feildsTourPlan, append:appnedTourPlan, remove:removeTourPlan } = useFieldArray({
+    control: form.control,
+    name: "tourPlan",
+  });
+
+
+  console.log(feildsIncluded);
 
   const onsubmit = async (data: any) => {
     console.log(data);
+    // normalizing data
     const tourData = {
       ...data,
       startDate: formatISO(data.startDate),
       endDate: formatISO(data.endDate),
+      included:data.included.map((item:any)=>item.value)
     };
-    console.log(tourData);
+    console.log("tourData: ", tourData);
 
     const formData = new FormData();
 
-    formData.append("data", JSON.stringify(tourData))
+    formData.append("data", JSON.stringify(tourData));
     images.forEach((image) => formData.append("files", image as File));
 
+    // handing add tour POST request 
     try {
-      const res = await addTour(formData).unwrap()
-      console.log(res);
+      const res = await addTour(formData).unwrap();
+      console.log("res: ", res);
 
-      const toastId = toast.loading("Adding Tour")
-      if(res.success){
-        toast.success("Tour Added", {id:toastId})
+      const toastId = toast.loading("Adding Tour");
+      if (res.success) {
+        toast.success("Tour Added", { id: toastId });
       }
-      
     } catch (error) {
       console.log(error);
-      toast.error("Adding tour failed")
+      toast.error("Adding tour failed");
     }
-
   };
 
   return (
@@ -313,6 +342,126 @@ export function AddTourModal() {
                 <MulptipleImageUploader onChange={setImages} />
               </div>
             </div>
+            <div className="flex justify-between">
+              <div>
+                <FormLabel>Included</FormLabel>
+              <Button size="icon" variant={"outline"} type="button" onClick={() => appnedInclued({ value: "" })}>
+                <Plus/>
+              </Button>
+              </div>
+              <div className="space-y-5 mt-4">
+                {feildsIncluded.map((item, index) => (
+                <div key={item.id} className="flex gap-2">
+                  <FormField
+                  control={form.control}
+                  name={`included.${index}.value`}
+                  key={item.id}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input placeholder="Add feild" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="button" onClick={()=> removeInclued()} variant="destructive" size={"icon"} className="cursor-pointer">
+                  <Trash2/>
+                </Button>
+                </div>
+              ))}
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                <FormLabel>Excluded</FormLabel>
+              <Button size="icon" variant={"outline"} type="button" onClick={() => appnedExcluded({ value: "" })}>
+                <Plus/>
+              </Button>
+              </div>
+              <div className="space-y-5 mt-4">
+                {feildsExcluded.map((item, index) => (
+                <div key={item.id} className="flex gap-2">
+                  <FormField
+                  control={form.control}
+                  name={`included.${index}.value`}
+                  key={item.id}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input placeholder="Add feild" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="button" onClick={()=> removeIExcluded()} variant="destructive" size={"icon"} className="cursor-pointer">
+                  <Trash2/>
+                </Button>
+                </div>
+              ))}
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                <FormLabel>Amenities</FormLabel>
+              <Button size="icon" variant={"outline"} type="button" onClick={() => appnedAmenities({ value: "" })}>
+                <Plus/>
+              </Button>
+              </div>
+              <div className="space-y-5 mt-4">
+                {feildsAmenities.map((item, index) => (
+                <div key={item.id} className="flex gap-2">
+                  <FormField
+                  control={form.control}
+                  name={`included.${index}.value`}
+                  key={item.id}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input placeholder="Add feild" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="button" onClick={()=> removeAmenities()} variant="destructive" size={"icon"} className="cursor-pointer">
+                  <Trash2/>
+                </Button>
+                </div>
+              ))}
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                <FormLabel>tourPlan</FormLabel>
+              <Button size="icon" variant={"outline"} type="button" onClick={() => appnedTourPlan({ value: "" })}>
+                <Plus/>
+              </Button>
+              </div>
+              <div className="space-y-5 mt-4">
+                {feildsTourPlan.map((item, index) => (
+                <div key={item.id} className="flex gap-2">
+                  <FormField
+                  control={form.control}
+                  name={`included.${index}.value`}
+                  key={item.id}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input placeholder="Add feild" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="button" onClick={()=> removeTourPlan()} variant="destructive" size={"icon"} className="cursor-pointer">
+                  <Trash2/>
+                </Button>
+                </div>
+              ))}
+              </div>
+            </div>
           </form>
         </Form>
         <DialogFooter>
@@ -321,7 +470,12 @@ export function AddTourModal() {
               Cancel
             </Button>
           </DialogClose>
-          <Button disabled={addTourLoading} className="cursor-pointer" type="submit" form="add-tour">
+          <Button
+            disabled={addTourLoading}
+            className="cursor-pointer"
+            type="submit"
+            form="add-tour"
+          >
             Save changes
           </Button>
         </DialogFooter>
