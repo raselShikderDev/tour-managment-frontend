@@ -1,14 +1,17 @@
-import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react"
+import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react";
 
-import { useFileUpload, type FileMetadata } from "@/hooks/use-file-upload"
-import { Button } from "@/components/ui/button"
-import { useEffect, type Dispatch } from "react"
+import { useFileUpload, type FileMetadata } from "@/hooks/use-file-upload";
+import { Button } from "@/components/ui/button";
+import { useEffect, type Dispatch } from "react";
 
-
-export default function MulptipleImageUploader({onChange}: {onChange: Dispatch<React.SetStateAction<[] | (File | FileMetadata) []>>}) {
-  const maxSizeMB = 5
-  const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
-  const maxFiles = 3
+export default function MulptipleImageUploader({
+  onChange,
+}: {
+  onChange: Dispatch<React.SetStateAction<[] | (File | FileMetadata)[]>>;
+}) {
+  const maxSizeMB = 5;
+  const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
+  const maxFiles = 3;
 
   const [
     { files, isDragging, errors },
@@ -26,20 +29,18 @@ export default function MulptipleImageUploader({onChange}: {onChange: Dispatch<R
     maxSize,
     multiple: true,
     maxFiles,
-  })
+  });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (files.length > 0) {
-      const imagelist = files.map((item)=> item.file)
+      const imagelist = files.map((item) => item.file);
       console.log(imagelist);
-      
-      onChange(imagelist)
+
+      onChange(imagelist);
     } else {
-      onChange([])
+      onChange([]);
     }
-  },[files, onChange])
-
-
+  }, [files, onChange]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -69,6 +70,7 @@ export default function MulptipleImageUploader({onChange}: {onChange: Dispatch<R
                 size="sm"
                 onClick={openFileDialog}
                 disabled={files.length >= maxFiles}
+                type="button"
               >
                 <UploadIcon
                   className="-ms-0.5 size-3.5 opacity-60"
@@ -91,6 +93,7 @@ export default function MulptipleImageUploader({onChange}: {onChange: Dispatch<R
                   />
                   <Button
                     onClick={() => removeFile(file.id)}
+                    type="button"
                     size="icon"
                     className="border-background focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border-2 shadow-none"
                     aria-label="Remove image"
@@ -113,7 +116,12 @@ export default function MulptipleImageUploader({onChange}: {onChange: Dispatch<R
             <p className="text-muted-foreground text-xs">
               SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
             </p>
-            <Button variant="outline" className="mt-4" onClick={openFileDialog}>
+            <Button
+              variant="outline"
+              type="button"
+              className="mt-4"
+              onClick={openFileDialog}
+            >
               <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
               Select images
             </Button>
@@ -131,5 +139,5 @@ export default function MulptipleImageUploader({onChange}: {onChange: Dispatch<R
         </div>
       )}
     </div>
-  )
+  );
 }
