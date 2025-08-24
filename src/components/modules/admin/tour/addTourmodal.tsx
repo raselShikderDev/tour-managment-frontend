@@ -37,22 +37,21 @@ import { useTourInfoQuery } from "@/redux/features/tourtypes/tourtypes.api";
 // import { useState } from "react";
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import MulptipleImageUploader from "@/components/mulptipleImageUploader";
+import { useState } from "react";
 // import z from "zod";
 
 export function AddTourModal() {
   //   const [open, setOpen] = useState<boolean>(false);
+  const [images, setImages] = useState<File[]| []>([])
 
   const { data: divisionsData, isLoading: divisionLoading } =
     useGetAllDivisonsQuery(null);
   const { data: tourTypesData, isLoading: tourTypeLoading } =
     useTourInfoQuery();
-
-  //   divisionsData.map((item:any)=>console.log(item));
-  console.log(divisionsData);
 
   //   const addTourSchema = z.object({
   //     title:z.string(),
@@ -65,7 +64,6 @@ export function AddTourModal() {
   //     endDate: z.date({
   //     message: "A date of birth is required.",
   //   }).nullable(),
-
   //   })
 
   const form = useForm({
@@ -75,25 +73,24 @@ export function AddTourModal() {
       tourType: "",
       division: "",
       description: "",
-      startDate: "", // ✅ must initialize
-      endDate: "", // ✅ must initialize
+      startDate: "",
+      endDate: "", 
     },
   });
 
   const onsubmit = async (data: any) => {
     console.log(data);
-
-    try {
-      //   const toastId = toast.loading("Adding division");
-      //   if (res.success) {
-      //     toast.success("division added", { id: toastId });
-      //     form.reset();
-      //   }
-      //   setOpen(false)
-    } catch (error) {
-      console.error(error);
-      toast.error("Adding tour type is faild");
+    const tourData = {
+      ...data,
+      startDate:formatISO(data.startDate),
+      endDate:formatISO(data.endDate)
     }
+console.log(tourData);
+
+    const formData = new FormData()
+
+    images.map((file)=>formData.append("files", file))
+
   };
 
   return (
@@ -189,7 +186,7 @@ export function AddTourModal() {
                 control={form.control}
                 name="startDate"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col flex-1">
+                  <FormItem className="w-full sm:flex flex-col flex-1">
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -229,7 +226,7 @@ export function AddTourModal() {
                 control={form.control}
                 name="endDate"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col flex-1">
+                  <FormItem className="w-full sm:flex flex-col flex-1">
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -263,11 +260,12 @@ export function AddTourModal() {
                 )}
               />
             </div>
+            <div className="flex-row space-x-5 space-y-5 sm:flex gap-5 items-stretch">
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full min-h-min sm:flex-1">
                   <FormControl>
                     <Textarea placeholder="Divison descriptions" {...field} />
                   </FormControl>
@@ -278,6 +276,10 @@ export function AddTourModal() {
                 </FormItem>
               )}
             />
+            <div className="w-full sm:flex-1">
+                <MulptipleImageUploader onChange={setImages}/>
+            </div>
+            </div>
           </form>
         </Form>
         <DialogFooter>
