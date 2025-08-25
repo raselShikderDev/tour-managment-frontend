@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 
 export type {ISendOtp,ILogin, ILoginResonseData, IRegisterUserResponse, IRegisterUser, IGetMeResponse, verifyOTP} from "@/types/auth.type"
 
-export type {ICreateTourType, ICreateTourTypeResponse, IGetAllTourTypeResponse} from "@/types/tour.types"
+export type {ICreateTourType, ICreateTourTypeResponse, IGetAllTourTypeResponse, ISingelTourResponse} from "@/types/tour.types"
 
 export type {IAddDivision} from "@/types/division.type"
 

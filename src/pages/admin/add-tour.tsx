@@ -1,4 +1,4 @@
-import { AddTourModal } from "@/components/modules/admin/tour/addTourmodal"
+import { AddTourModal } from "@/components/modules/admin/tour/addtourmodal"
 
 const AddTour = () => {
   return (
