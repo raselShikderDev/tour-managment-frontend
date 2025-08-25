@@ -1,5 +1,5 @@
-export interface ICreateTourType{
-    name: string;
+export interface ICreateTourType {
+  name: string;
 }
 
 export interface ICreateTourTypeResponse {
@@ -10,12 +10,11 @@ export interface ICreateTourTypeResponse {
   __v: number;
 }
 
-
 export interface IGetAllTourTypeResponse {
   meta: {
-      total: number;
-  }
-  data: ICreateTourTypeResponse[]
+    total: number;
+  };
+  data: ICreateTourTypeResponse[];
 }
 
 export interface ISingelTourResponse {
@@ -35,13 +34,10 @@ export interface ISingelTourResponse {
   minAge: number;
   division: string;
   tourType: string;
+  endDate: string;
+  startDate: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
   slug: string;
   __v: number;
 }
-
-
-
-
-

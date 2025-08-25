@@ -1,8 +1,9 @@
+import AllTours from "@/components/modules/user/alltours"
 
 const ToursPage = () => {
   return (
     <div>
-      <h1>ALl tours for user</h1>
+      <AllTours/>
     </div>
   )
 }

@@ -1,10 +1,10 @@
 
 // import Bookings from "@/pages/user/bookings";
-import ToursPage from "@/pages/user/tours";
+import ToursPage from "@/pages/user/tours_page";
 import type { ISideBarItem } from "@/types";
 import { lazy } from "react";
 
-const Bookings = lazy(()=>import("@/pages/user/bookings"))
+const Bookings = lazy(()=>import("@/pages/user/bookingsPage"))
 
 export const userSidebarItems:ISideBarItem[] = [
     {

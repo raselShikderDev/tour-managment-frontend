@@ -22,17 +22,8 @@ export const tourApi:any = baseApi.injectEndpoints({
       }),
       invalidatesTags:["TOUR"],
     }),
-    // Geting all tour Types
-    getTours: builder.query({
-      query: () => ({
-        url: "/tours",
-        method: "GET",
-      }),
-      providesTags:["TOUR"],
-      transformResponse:(response)=> response.data
-    }),
-    // Geting all tour packages
-    getTourPackage: builder.query<ISingelTourResponse[], null>({
+    // // Geting all tour packages
+    getAllTourPackage: builder.query<ISingelTourResponse[], null>({
       query: () => ({
         url: "/tour",
         method: "GET",
@@ -40,11 +31,20 @@ export const tourApi:any = baseApi.injectEndpoints({
       providesTags:["TOUR"],
       transformResponse:(response:IResponse<ISingelTourResponse[]>)=> response.data
     }),
+    // Geting singel tour package
+    getSingelTour: builder.query<ISingelTourResponse, string>({
+      query: (tourId) => ({
+        url: `/tour/${tourId}`,
+        method: "GET",
+      }),
+      providesTags:["TOUR"],
+      transformResponse:(response:IResponse<ISingelTourResponse>)=> response.data
+    }),
   }),
 });
 
 export const {
   useAddTourMutation,
-  useGetToursQuery,
-  useGetTourPackageQuery,
+  useGetAllTourPackageQuery,
+  useGetSingelTourQuery
 } = tourApi;
