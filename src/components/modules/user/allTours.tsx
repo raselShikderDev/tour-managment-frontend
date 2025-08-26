@@ -60,9 +60,10 @@ export default function AllTours() {
                 Max Guests: {tour.maxGuest || "N/A"}
               </p>
               <div className="w-full flex mt-4">
-                <Button className="flex-1"
+                <Button className="flex-1 cursor-pointer"
                   variant={"default"}
-                  onClick={() => navigate(`/booking/${tour.slug}`, { state: tour.slug })}
+
+                  onClick={() => navigate(`/booking/${tour.slug}`, { state: tour as ISingelTourResponse })}
                 >
                   Book Tour
                 </Button>

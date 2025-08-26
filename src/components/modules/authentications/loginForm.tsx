@@ -25,7 +25,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [login] = useLoginMutation();
+  const [login, {isLoading}] = useLoginMutation();
   const navigator = useNavigate();
 
   const loginSchema = z.object({
@@ -126,7 +126,7 @@ export function LoginForm({
                       </FormItem>
                     )}
                   />
-                  <Button className="cursor-pointer" type="submit">
+                  <Button disabled={isLoading} className="cursor-pointer" type="submit">
                     LogIn
                   </Button>
                 </Form>

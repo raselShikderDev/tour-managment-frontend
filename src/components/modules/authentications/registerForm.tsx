@@ -24,7 +24,7 @@ export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [register] = useRegisterMutation();
+  const [register, {isLoading}] = useRegisterMutation();
   const navigator = useNavigate();
 
   const registerSchema = z.object({
@@ -155,7 +155,7 @@ export function RegisterForm({
                     </FormItem>
                   )}
                 />
-                <Button className="cursor-pointer" type="submit">Submit</Button>
+                <Button disabled={isLoading} className="cursor-pointer" type="submit">Submit</Button>
               </Form>
               <div className="text-center text-sm">
                 Already have an account? <Link to={"/sign-in"}>Log In</Link>

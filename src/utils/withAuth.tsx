@@ -5,7 +5,7 @@ import { Navigate } from "react-router";
 
 export const withAuth = (Component: ComponentType, requiredRole?: TRole) => {
   return function AuthWrapper() {
-    const { data, isLoading } = useUserInfoQuery(undefined);
+    const { data, isLoading } = useUserInfoQuery(null);
 
     if (!isLoading && !data?.data?.email) {
       return <Navigate to={"/sign-in"} />;
