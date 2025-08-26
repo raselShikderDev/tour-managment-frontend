@@ -28,13 +28,14 @@ export default function AllTours() {
   return (
     <section className="py-20 container mx-auto grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {data?.data.map((tour: ISingelTourResponse) => (
-        <Link target="_blank" to={`/tours/${tour.slug}`} key={tour._id}>
-          <Card className="hover:shadow-lg py-0 pb-5 transition-shadow">
+        <Card className="hover:shadow-lg py-0 pb-5 transition-shadow">
+            <Link target="_blank" to={`/tours/${tour.slug}`} key={tour._id}>
             <img
               src={tour.images?.[0] || "/placeholder.jpg"}
               alt={tour.title}
               className="w-full h-48 object-cover rounded-t-lg"
             />
+            </Link>
             <CardContent>
               <CardHeader>
                 <CardTitle>{tour.title || "No Title"}</CardTitle>
@@ -61,14 +62,14 @@ export default function AllTours() {
               <div className="w-full flex mt-4">
                 <Button className="flex-1"
                   variant={"default"}
-                  onClick={() => navigate(`/booking/${tour.slug}`, { state: { tour } })}
+                  onClick={() => navigate(`/booking/${tour.slug}`, { state: tour.slug })}
                 >
                   Book Tour
                 </Button>
               </div>
             </CardContent>
           </Card>
-        </Link>
+        
       ))}
     </section>
   );
