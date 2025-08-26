@@ -75,3 +75,113 @@ export default function AllTours() {
     </section>
   );
 }
+
+  // return (
+  //     <div className="container mx-auto py-10 space-y-6">
+  //       {myBookings.map((booking:any) => {
+  //         const tour = booking.tour;
+  //         return (
+  //           <Card key={booking._id} className="p-6 flex flex-col lg:flex-row gap-6">
+  //             {/* Tour Image */}
+  //             <div className="lg:w-1/3">
+  //               <img
+  //                 src={tour.images?.[0] || "https://via.placeholder.com/400x250"}
+  //                 alt={tour.title || "Tour Image"}
+  //                 className="w-full h-56 object-cover rounded-lg"
+  //               />
+  //             </div>
+  
+  //             {/* Tour & Booking Details */}
+  //             <div className="lg:w-2/3 flex flex-col gap-3">
+  //               <h2 className="text-2xl font-bold">{tour.title || "No Title Available"}</h2>
+  //               <p className="text-gray-600">{tour.description || "No description available."}</p>
+  
+  //               <div className="flex flex-wrap gap-2 mt-2">
+  //                 <Badge variant="secondary">{tour.location || "Location N/A"}</Badge>
+  //                 <Badge variant="secondary">Cost: {tour.costForm ?? "N/A"}৳</Badge>
+  //                 <Badge variant="secondary">Max Guests: {tour.maxGuest ?? "N/A"}</Badge>
+  //                 <Badge variant="secondary">Min Age: {tour.minAge ?? "N/A"}</Badge>
+  //               </div>
+  
+  //               <p>
+  //                 <strong>Departure:</strong> {tour.departureLocation || "N/A"} |{" "}
+  //                 <strong>Arrival:</strong> {tour.arrivalLocation || "N/A"}
+  //               </p>
+  
+  //               <p>
+  //                 <strong>Dates:</strong>{" "}
+  //                 {tour.startDate && tour.endDate
+  //                   ? `${format(new Date(tour.startDate), "dd MMM yyyy")} → ${format(
+  //                       new Date(tour.endDate),
+  //                       "dd MMM yyyy"
+  //                     )}`
+  //                   : "Dates not available"}
+  //               </p>
+  
+  //               <div>
+  //                 <strong>Included:</strong>
+  //                 {tour.included && tour.included.length > 0 ? (
+  //                   <ul className="list-disc list-inside ml-2">
+  //                     {tour.included.map((item:any, idx:number) => (
+  //                       <li key={idx}>{item}</li>
+  //                     ))}
+  //                   </ul>
+  //                 ) : (
+  //                   <p>N/A</p>
+  //                 )}
+  //               </div>
+  
+  //               <div>
+  //                 <strong>Excluded:</strong>
+  //                 {tour.excluded && tour.excluded.length > 0 ? (
+  //                   <ul className="list-disc list-inside ml-2">
+  //                     {tour.excluded.map((item:any, idx:number) => (
+  //                       <li key={idx}>{item}</li>
+  //                     ))}
+  //                   </ul>
+  //                 ) : (
+  //                   <p>N/A</p>
+  //                 )}
+  //               </div>
+  
+  //               <div>
+  //                 <strong>Amenities:</strong>
+  //                 {tour.amenities && tour.amenities.length > 0 ? (
+  //                   <ul className="list-disc list-inside ml-2">
+  //                     {tour.amenities.map((item:any, idx:number) => (
+  //                       <li key={idx}>{item}</li>
+  //                     ))}
+  //                   </ul>
+  //                 ) : (
+  //                   <p>N/A</p>
+  //                 )}
+  //               </div>
+  
+  //               <div>
+  //                 <strong>Tour Plan:</strong>
+  //                 {tour.tourPlan && tour.tourPlan.length > 0 ? (
+  //                   <ScrollArea className="h-32 border rounded p-2">
+  //                     <ol className="list-decimal list-inside">
+  //                       {tour.tourPlan.map((item:any, idx:number) => (
+  //                         <li key={idx}>{item}</li>
+  //                       ))}
+  //                     </ol>
+  //                   </ScrollArea>
+  //                 ) : (
+  //                   <p>N/A</p>
+  //                 )}
+  //               </div>
+  
+  //               <div className="mt-4">
+  //                 <Button variant="default">View Tour</Button>
+  //               </div>
+  //             </div>
+  //           </Card>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+
+// {
+//   "tour": { "_id": "688356c8ce6fe463e5c0bb44", "title": "Sundarbans Wildlife Expedition00 test01", "location": "Sundarbans, Bangladesh", "description": "An unforgettable journey into the heart of the Sundarbans, the world's largest mangrove forest, home to the Royal Bengal Tiger, diverse wildlife, and unique ecosystems. Explore the waterways by boat, observe wildlife in their natural habitat, and learn about local culture.", "costForm": 1500, "images": [], "startDate": "2025-10-15T09:00:00.000Z", "endDate": "2025-10-18T17:00:00.000Z", "departureLocation": "Khulna, Bangladesh", "arrivalLocation": "Khulna, Bangladesh", "included": [ "Accommodation on boat/resort", "All meals (breakfast, lunch, dinner)", "Experienced local guide", "Forest entry permits", "Wildlife spotting activities", "Transportation from Khulna" ], "excluded": [ "Personal expenses", "International/domestic flights to Khulna", "Travel insurance", "Gratuities" ], "amenities": [ "On-board washroom facilities", "Observation deck", "First aid kit", "Life jackets" ], "tourPlan": [ "Day 1: Arrival in Khulna, embark boat, start journey into Sundarbans, explore waterways.", "Day 2: Full day wildlife observation, visit various points of interest.", "Day 3: Continue exploration, village visit, cultural interaction.", "Day 4: Morning activities, return to Khulna, departure." ], "maxGuest": 12, "minAge": 8, "division": "687a6869b5d8fa54d9a88f38", "tourType": "687abb3314f68aa037ca9d55", "createdAt": "2025-07-25T10:04:56.768Z", "updatedAt": "2025-07-25T10:04:56.768Z", "slug": "sundarbans-wildlife-expedition00-test01", "__v": 0 }
+// }

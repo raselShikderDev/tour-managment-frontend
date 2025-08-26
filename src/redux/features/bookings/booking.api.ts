@@ -1,10 +1,9 @@
 import { baseApi } from "@/redux/baseApi";
-import type { IResponse, ISingelTourResponse } from "@/types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const BookingApi: any = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // creating a singel tour
+    // creating a singel booking
     createBooking: builder.mutation({
       query: (tourInfo) => ({
         url: "/booking/create",
@@ -13,35 +12,23 @@ export const BookingApi: any = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["BOOKINGS"],
     }),
-    // deleteing a tour types
-    removeBooking: builder.mutation({
-      query: (tourId) => ({
-        url: `/tours/${tourId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["BOOKINGS"],
-    }),
-    // // Geting all tour packages
-    getAllookings: builder.query<ISingelTourResponse[], null>({
+    // // Geting my bookings
+    getMyBookings: builder.query({
       query: () => ({
-        url: "/tour",
+        url: "/booking/my-booking",
         method: "GET",
       }),
       providesTags: ["BOOKINGS"],
-      transformResponse: (response: IResponse<ISingelTourResponse[]>) =>
-        response.data,
-    }),
-    // Geting singel tour package
-    getSingelBooking: builder.query<ISingelTourResponse, string>({
+      transformResponse: (response) =>response.data}),
+    // Geting singel bookings
+    getSingelBooking: builder.query({
       query: (tourId) => ({
         url: `/tour/${tourId}`,
         method: "GET",
       }),
       providesTags: ["BOOKINGS"],
-      transformResponse: (response: IResponse<ISingelTourResponse>) =>
-        response.data,
-    }),
+      transformResponse: (response) =>response.data}),
   }),
 });
 
-export const { useCreateBookingMutation } = BookingApi;
+export const { useCreateBookingMutation, useGetMyBookingsQuery } = BookingApi;

@@ -16,6 +16,7 @@ import type { TRole } from "@/types";
 import HomePage from "@/pages/homePage";
 import TourDetails from "@/pages/user/tourDetails";
 import CreateBooking from "@/components/modules/user/booking";
+import AllPayments from "@/components/modules/user/allPayments";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
       {
         Component: withAuth(CreateBooking),
         path: "booking/:slug",
+      },
+      {
+        Component: withAuth(AllPayments),
+        path: "payments",
       },
     ],
   },

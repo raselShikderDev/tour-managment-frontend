@@ -1,4 +1,4 @@
-import AllTours from "@/components/modules/user/alltours"
+import AllTours from "@/components/modules/user/allTours"
 
 const ToursPage = () => {
   return (
