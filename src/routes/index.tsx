@@ -17,6 +17,9 @@ import HomePage from "@/pages/homePage";
 import TourDetails from "@/pages/user/tourDetails";
 import CreateBooking from "@/components/modules/user/booking";
 import AllPayments from "@/components/modules/user/allPayments";
+import SuccessPayment from "@/pages/user/successPayment";
+import PaymentFailedPage from "@/pages/user/failedPayment";
+import PaymentCanceledPage from "@/pages/user/canceledpayment";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +49,18 @@ export const router = createBrowserRouter([
       {
         Component: withAuth(AllPayments),
         path: "payments",
+      },
+      {
+        Component: withAuth(SuccessPayment),
+        path: "payment/success",
+      },
+      {
+        Component: withAuth(PaymentFailedPage),
+        path: "payment/fail",
+      },
+      {
+        Component: withAuth(PaymentCanceledPage),
+        path: "payment/cancel",
       },
     ],
   },
