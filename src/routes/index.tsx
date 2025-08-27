@@ -20,6 +20,7 @@ import AllPayments from "@/components/modules/user/allPayments";
 import SuccessPayment from "@/pages/user/successPayment";
 import PaymentFailedPage from "@/pages/user/failedPayment";
 import PaymentCanceledPage from "@/pages/user/canceledpayment";
+import ToursPage from "@/pages/user/tours_page";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         Component: Contact,
         path: "contact",
+      },
+      {
+        Component: ToursPage,
+        path: "tours",
       },
       {
         Component: TourDetails,
