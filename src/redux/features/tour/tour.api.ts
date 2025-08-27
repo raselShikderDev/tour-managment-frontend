@@ -24,9 +24,10 @@ export const tourApi:any = baseApi.injectEndpoints({
     }),
     // // Geting all tour packages
     getAllTourPackage: builder.query<ISingelTourResponse[], null>({
-      query: () => ({
+      query: (params) => ({
         url: "/tour",
         method: "GET",
+        params,
       }),
       providesTags:["TOUR"],
       transformResponse:(response:IResponse<ISingelTourResponse[]>)=> response.data
