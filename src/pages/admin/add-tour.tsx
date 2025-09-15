@@ -1,5 +1,5 @@
 import { AddTourModal } from "@/components/modules/admin/tour/addtourmodal"
-import { useGetAllTourPackageQuery } from "@/redux/features/tour/tour.api";
+import { useDeleteTourMutation, useGetAllTourPackageQuery } from "@/redux/features/tour/tour.api";
 import {
   Table,
   TableBody,
@@ -23,25 +23,30 @@ import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 
-const handleTourDeletion = async (deletedTourId: string) => {
-    // const res = await removeTourType(tourTypeId).unwrap();
-    console.log(deletedTourId);
-    toast.success("Tour deleted");
-    // console.log(res);
-    // const tourId = toast.loading("Deleting tour");
-    // if (res.success) {
-    //   toast.success("Tour deleted", { id: tourId });
-    // }
-  };
+
 const AddTour = () => {
     const { data } = useGetAllTourPackageQuery(undefined);
+      const [deleteTour] = useDeleteTourMutation();
+    
   
   console.log(data.data);
-  
+  const handleTourDeletion = async (deletedTourId: string) => {
+    try {
+      const res = await deleteTour(deletedTourId).unwrap();
+    console.log(res);
+    const tourId = toast.loading("Deleting tour");
+    if (res.success) {
+      toast.success("Tour deleted", { id: tourId });
+    }
+    } catch (error) {
+      console.error(error);
+      toast.error("Faild to delete tour")
+    }
+  };
    return (
     <div className="w-full max-w-7xl mx-auto px-5">
       <div className="flex justify-between my-8">
-        <h1 className="text-xl font-semibold">Tour Type</h1>
+        <h1 className="text-xl font-semibold">Tours</h1>
         <AddTourModal />
       </div>
       <div className="border border-muted rounded-md">

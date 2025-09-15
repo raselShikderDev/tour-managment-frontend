@@ -31,11 +31,16 @@ const AddTourType = () => {
   console.log("data in add tour type page:", data);
 
   const handleTourTypeDeletion = async (tourTypeId: string) => {
-    const res = await removeTourType(tourTypeId).unwrap();
+    try {
+      const res = await removeTourType(tourTypeId).unwrap();
     console.log(res);
     const tourId = toast.loading("Deleting tour type");
     if (res.success) {
       toast.success("Tour type deleted", { id: tourId });
+    }
+    } catch (error) {
+      console.error(error);
+      toast.error("Faild to delete tour type")
     }
   };
 
