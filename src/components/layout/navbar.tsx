@@ -29,13 +29,14 @@ const navigationLinks = [
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
   { href: "/admin", label: "Dashboard", role: role.admin },
+  { href: "/admin", label: "Dashboard", role: role.superAdmin },
   { href: "/user", label: "Dashboard", role: role.user },
 ];
 
 export default function Navbar() {
   const { data, isLoading } = useUserInfoQuery(null);
   const [logOut] = useLogOutMutation();
-
+  const userRole = data?.data?.role;
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -43,6 +44,16 @@ export default function Navbar() {
     toast.success("Successfullly logOut");
     dispatch(authApi.util.resetApiState());
   };
+
+  const filterLinks = navigationLinks.filter((item) => {
+    if (item.role === "PUBLIC") {
+      return true;
+    }
+    if (userRole && item.role === userRole) {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <header className="border-b px-4">
@@ -87,7 +98,7 @@ export default function Navbar() {
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
+                  {filterLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink asChild className="py-1.5">
                         <Link to={link.href}>{link.label}</Link>
@@ -106,7 +117,7 @@ export default function Navbar() {
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
+                {filterLinks.map((link, index) => (
                   <React.Fragment key={index}>
                     {link.role === "PUBLIC" && (
                       <NavigationMenuItem>
@@ -118,7 +129,7 @@ export default function Navbar() {
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )}
-                    {link.role === data?.data?.role && (
+                    {data?.data.role && link.role === data?.data.role && (
                       <NavigationMenuItem>
                         <NavigationMenuLink
                           asChild
