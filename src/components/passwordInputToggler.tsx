@@ -16,6 +16,7 @@ export default function PasswordInputToggler({...field}) {
           id={id}
           className="pe-9"
           placeholder="123@#Password"
+          autoComplete="password"
           type={isVisible ? "text" : "password"}
           {...field}
         />

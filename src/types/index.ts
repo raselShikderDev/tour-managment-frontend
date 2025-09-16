@@ -1,5 +1,10 @@
+import type { ComponentType } from "react";
+
 export type {ISendOtp,ILogin, ILoginResonseData, IRegisterUserResponse, IRegisterUser, IGetMeResponse, verifyOTP} from "@/types/auth.type"
 
+export type {ICreateTourType, ICreateTourTypeResponse, IGetAllTourTypeResponse, ISingelTourResponse} from "@/types/tour.types"
+
+export type {IAddDivision} from "@/types/division.type"
 
 export interface IResponse<T> {
   statusCode: number;
@@ -8,3 +13,13 @@ export interface IResponse<T> {
   data: T;
 }
 
+export interface ISideBarItem{
+  title:string,
+  items:{
+    title:string,
+    url:string,
+    component:ComponentType,
+  }[]
+}
+
+export type TRole = "USER" | "GUIDE" |  "ADMIN" |  "SUPER_ADMIN"

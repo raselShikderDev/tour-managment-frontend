@@ -15,32 +15,45 @@ import {
 import { ModeToggle } from "./mode-toggler";
 import {
   authApi,
-  useGetMeQuery,
   useLogOutMutation,
+  useUserInfoQuery,
 } from "@/redux/features/auth/auth.api";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
+import { role } from "@/constants/role";
+import React from "react";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Home", role: "PUBLIC" },
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/contact", label: "Contact", role: "PUBLIC" },
+  { href: "/admin", label: "Dashboard", role: role.admin },
+  { href: "/admin", label: "Dashboard", role: role.superAdmin },
+  { href: "/user", label: "Dashboard", role: role.user },
 ];
 
 export default function Navbar() {
-  const { data } = useGetMeQuery(null);
+  const { data, isLoading } = useUserInfoQuery(null);
   const [logOut] = useLogOutMutation();
-
+  const userRole = data?.data?.role;
   const dispatch = useDispatch();
-console.log(data);
-
-  console.log(data?.data?.email);
 
   const handleLogout = async () => {
     await logOut(null);
-    toast.success("Successfullly logOut")
+    toast.success("Successfullly logOut");
     dispatch(authApi.util.resetApiState());
   };
+
+  const filterLinks = navigationLinks.filter((item) => {
+    if (item.role === "PUBLIC") {
+      return true;
+    }
+    if (userRole && item.role === userRole) {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <header className="border-b px-4">
@@ -85,9 +98,9 @@ console.log(data);
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
+                  {filterLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink className="py-1.5">
+                      <NavigationMenuLink asChild className="py-1.5">
                         <Link to={link.href}>{link.label}</Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -98,21 +111,35 @@ console.log(data);
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Button className="text-primary hover:text-primary/90">
               <Logo />
-            </a>
+            </Button>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      asChild
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      <Link to={link.href}>{link.label}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
+                {filterLinks.map((link, index) => (
+                  <React.Fragment key={index}>
+                    {link.role === "PUBLIC" && (
+                      <NavigationMenuItem>
+                        <NavigationMenuLink
+                          asChild
+                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                        >
+                          <Link to={link.href}>{link.label}</Link>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    )}
+                    {data?.data.role && link.role === data?.data.role && (
+                      <NavigationMenuItem>
+                        <NavigationMenuLink
+                          asChild
+                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                        >
+                          <Link to={link.href}>{link.label}</Link>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    )}
+                  </React.Fragment>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
@@ -121,7 +148,7 @@ console.log(data);
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          {data?.data?.email && (
+          {!isLoading && data?.data?.email ? (
             <Button
               onClick={handleLogout}
               variant={"outline"}
@@ -129,10 +156,9 @@ console.log(data);
             >
               LogOut
             </Button>
-          )}
-          {!data?.data?.email && (
+          ) : (
             <Button asChild className="text-sm cursor-pointer">
-              <Link to="/sign-in">Sign In</Link>
+              <Link to="/sign-in">LogIn</Link>
             </Button>
           )}
         </div>
