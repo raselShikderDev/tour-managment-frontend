@@ -31,6 +31,8 @@ const AddTour = () => {
   
   console.log(data.data);
   const handleTourDeletion = async (deletedTourId: string) => {
+    console.log("deleteing");
+    
     try {
       const res = await deleteTour(deletedTourId).unwrap();
     console.log(res);
@@ -62,7 +64,7 @@ const AddTour = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.data.map(
+            {data?.data?.map(
               (item: { _id: string; title: string }, index: number) => (
                 <TableRow key={index}>
                   <TableCell className="font-medium w-full">
