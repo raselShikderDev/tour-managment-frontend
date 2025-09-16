@@ -27,7 +27,7 @@ import { toast } from "sonner";
 
 const AddTourType = () => {
   const { data } = useTourInfoQuery(undefined);
-  const [removeTourType] = useRemoveTourTypeMutation();
+  const [removeTourType, {isLoading}] = useRemoveTourTypeMutation();
   console.log("data in add tour type page:", data);
 
   const handleTourTypeDeletion = async (tourTypeId: string) => {
@@ -73,7 +73,7 @@ const AddTourType = () => {
                     <DeleteModalConfirmation
                       onConfirm={() => handleTourTypeDeletion(item._id)}
                     >
-                      <Button className="cursor-pointer" size={"sm"}>
+                      <Button disabled={isLoading} className="cursor-pointer" size={"sm"}>
                         <Trash2 />
                       </Button>
                     </DeleteModalConfirmation>

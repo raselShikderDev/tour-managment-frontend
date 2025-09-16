@@ -1,6 +1,6 @@
 import Logo from "@/assets/icons/logo";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -38,6 +38,7 @@ export default function Navbar() {
   const [logOut] = useLogOutMutation();
   const userRole = data?.data?.role;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logOut(null);
@@ -111,7 +112,11 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <Button className="text-primary hover:text-primary/90">
+            <Button
+              onClick={() => navigate("/")}
+              className="text-primary hover:text-primary/90"
+              variant={"ghost"}
+            >
               <Logo />
             </Button>
             {/* Navigation menu */}

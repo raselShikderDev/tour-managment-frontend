@@ -12,25 +12,30 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Logo from "@/assets/icons/logo";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { getSidebarItems } from "@/utils/getSidebarItems";
 import type { TRole } from "@/types";
-
-
-
+import { Button } from "./ui/button";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const {data:userData} = useUserInfoQuery(null)
+  const { data: userData } = useUserInfoQuery(null);
+  const navigate = useNavigate()
 
-// This is sample data.
-const data = {
-  navMain: getSidebarItems(userData?.data?.role as TRole)
-};
+  // This is sample data.
+  const data = {
+    navMain: getSidebarItems(userData?.data?.role as TRole),
+  };
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <Logo />
+        <Button
+          onClick={() => navigate("/")}
+          className="text-primary hover:text-primary/90"
+          variant={"ghost"}
+        >
+          <Logo />
+        </Button>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}

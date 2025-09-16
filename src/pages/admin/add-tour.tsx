@@ -26,7 +26,7 @@ import { toast } from "sonner";
 
 const AddTour = () => {
     const { data } = useGetAllTourPackageQuery(undefined);
-      const [deleteTour] = useDeleteTourMutation(); 
+      const [deleteTour, {isLoading}] = useDeleteTourMutation(); 
   
   const handleTourDeletion = async (deletedTourId: string) => {
     console.log("deleteing");
@@ -72,7 +72,7 @@ const AddTour = () => {
                     <DeleteModalConfirmation
                       onConfirm={() => handleTourDeletion(item._id)}
                     >
-                      <Button className="cursor-pointer" size={"sm"}>
+                      <Button disabled={isLoading} className="cursor-pointer" size={"sm"}>
                         <Trash2 />
                       </Button>
                     </DeleteModalConfirmation>

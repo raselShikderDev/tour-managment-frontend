@@ -1,5 +1,5 @@
 import { AddDivisionModal } from "@/components/modules/admin/division/addDivisionModal";
-import { useGetAllDivisonsQuery } from "@/redux/features/division/division.api";
+import { useGetAllDivisonsQuery, useRemoveDivisionMutation } from "@/redux/features/division/division.api";
 import {
   Table,
   TableBody,
@@ -25,18 +25,24 @@ import { toast } from "sonner";
 
 const AddDivision = () => {
   const { data } = useGetAllDivisonsQuery(undefined);
+const [deleteDivision, {isLoading}] = useRemoveDivisionMutation(); 
+  
+  const handleTourDeletion = async (deletedTourId: string) => {
+    console.log("deleteing");
     
-    console.log(data);
-    const handleTourDeletion = async (deletedTourId: string) => {
-        // const res = await removeTourType(tourTypeId).unwrap();
-        console.log(deletedTourId);
-        toast.success("Division deleted");
-        // console.log(res);
-        // const tourId = toast.loading("Deleting tour");
-        // if (res.success) {
-        //   toast.success("Tour deleted", { id: tourId });
-        // }
-      };
+    try {
+      const res = await deleteDivision(deletedTourId).unwrap();
+    console.log(res);
+    const divisionId = toast.loading("Deleting division");
+    if (res.success) {
+      toast.success("Division deleted", { id: divisionId });
+    }
+    } catch (error) {
+      console.error(error);
+      toast.error("Faild to delete Division")
+    }
+  };
+      
      return (
       <div className="w-full max-w-7xl mx-auto px-5">
         <div className="flex justify-between my-8">
@@ -66,7 +72,7 @@ const AddDivision = () => {
                       <DeleteModalConfirmation
                         onConfirm={() => handleTourDeletion(item._id)}
                       >
-                        <Button className="cursor-pointer" size={"sm"}>
+                        <Button disabled={isLoading} className="cursor-pointer" size={"sm"}>
                           <Trash2 />
                         </Button>
                       </DeleteModalConfirmation>
