@@ -26,10 +26,8 @@ import { toast } from "sonner";
 
 const AddTour = () => {
     const { data } = useGetAllTourPackageQuery(undefined);
-      const [deleteTour] = useDeleteTourMutation();
-    
+      const [deleteTour] = useDeleteTourMutation(); 
   
-  console.log(data.data);
   const handleTourDeletion = async (deletedTourId: string) => {
     console.log("deleteing");
     
