@@ -1,11 +1,11 @@
-import HeroSection from "@/components/modules/homePage/heroSection"
+import HeroSection from "@/components/modules/homePage/heroSection";
 
 const HomePage = () => {
   return (
-    <>
-     <HeroSection/>
-    </>
-  )
-}
+    <div className="max-w-full mx-auto">
+      <HeroSection />
+    </div>
+  );
+};
 
-export default HomePage
+export default HomePage;

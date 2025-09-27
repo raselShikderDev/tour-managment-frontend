@@ -4,14 +4,15 @@ import { LoadingSpinner } from "@/components/loading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useGetMyBookingsQuery } from "@/redux/features/bookings/booking.api";
+import { useGetMyPendingBookingsQuery } from "@/redux/features/bookings/booking.api";
 import type { ISingelTourResponse } from "@/types";
 import { format } from "date-fns";
 import { useNavigate } from "react-router";
 
-const MyBookings = () => {
+const MyPendingsBookings = () => {
   const navigate = useNavigate();
-  const { data: myBookings, error, isLoading } = useGetMyBookingsQuery();
+  const { data: myBookings, error, isLoading } = useGetMyPendingBookingsQuery();
+console.log(myBookings);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -84,4 +85,4 @@ const MyBookings = () => {
     </div>
   );
 };
-export default MyBookings;
+export default MyPendingsBookings;
