@@ -12,14 +12,33 @@ export const BookingApi: any = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["BOOKINGS"],
     }),
-    // // Geting my bookings
+    // Geting my bookings
     getMyBookings: builder.query({
       query: () => ({
         url: "/booking/my-booking",
         method: "GET",
       }),
       providesTags: ["BOOKINGS"],
-      transformResponse: (response) =>response.data}),
+      transformResponse: (response) => response.data,
+    }),
+    // Geting my bookings
+    getMyCompletedBookings: builder.query({
+      query: () => ({
+        url: "/booking/pending-booking",
+        method: "GET",
+      }),
+      providesTags: ["BOOKINGS"],
+      transformResponse: (response) => response.data,
+    }),
+    // Geting my bookings
+    getMyPendingBookings: builder.query({
+      query: () => ({
+        url: "/booking/pending-booking",
+        method: "GET",
+      }),
+      providesTags: ["BOOKINGS"],
+      transformResponse: (response) => response.data,
+    }),
     // Geting singel bookings
     getSingelBooking: builder.query({
       query: (tourId) => ({
@@ -27,8 +46,14 @@ export const BookingApi: any = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["BOOKINGS"],
-      transformResponse: (response) =>response.data}),
+      transformResponse: (response) => response.data,
+    }),
   }),
 });
 
-export const { useCreateBookingMutation, useGetMyBookingsQuery } = BookingApi;
+export const {
+  useCreateBookingMutation,
+  useGetMyBookingsQuery,
+  useGetMyPendingBookingsQuery,
+  useGetMyCompletedBookingsQuery,
+} = BookingApi;

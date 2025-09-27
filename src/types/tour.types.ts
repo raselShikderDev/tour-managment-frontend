@@ -17,6 +17,23 @@ export interface IGetAllTourTypeResponse {
   data: ICreateTourTypeResponse[];
 }
 
+export interface IDivision {
+  _id: string;
+  name: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  slug: string;
+  __v: number;
+}
+
+export interface ITourTypes {
+  _id: string;
+  name: string;
+  createdAt: string; // could be Date if you parse it
+  updatedAt: string; // could be Date if you parse it
+  __v: number;
+}
+
 export interface ISingelTourResponse {
   _id: string;
   title: string;
@@ -32,8 +49,8 @@ export interface ISingelTourResponse {
   tourPlan: string[];
   maxGuest: number;
   minAge: number;
-  division: string;
-  tourType: string;
+  division: IDivision[];
+  tourType: ITourTypes[];
   endDate: string;
   startDate: string;
   createdAt: string; // ISO date string

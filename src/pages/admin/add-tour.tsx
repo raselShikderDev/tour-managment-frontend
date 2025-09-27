@@ -26,11 +26,11 @@ import { toast } from "sonner";
 
 const AddTour = () => {
     const { data } = useGetAllTourPackageQuery(undefined);
-      const [deleteTour] = useDeleteTourMutation();
-    
+      const [deleteTour, {isLoading}] = useDeleteTourMutation(); 
   
-  console.log(data.data);
   const handleTourDeletion = async (deletedTourId: string) => {
+    console.log("deleteing");
+    
     try {
       const res = await deleteTour(deletedTourId).unwrap();
     console.log(res);
@@ -62,7 +62,7 @@ const AddTour = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.data.map(
+            {data?.data?.map(
               (item: { _id: string; title: string }, index: number) => (
                 <TableRow key={index}>
                   <TableCell className="font-medium w-full">
@@ -72,7 +72,7 @@ const AddTour = () => {
                     <DeleteModalConfirmation
                       onConfirm={() => handleTourDeletion(item._id)}
                     >
-                      <Button className="cursor-pointer" size={"sm"}>
+                      <Button disabled={isLoading} className="cursor-pointer" size={"sm"}>
                         <Trash2 />
                       </Button>
                     </DeleteModalConfirmation>

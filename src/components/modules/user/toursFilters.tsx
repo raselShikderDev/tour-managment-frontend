@@ -16,16 +16,13 @@ const ToursFilters = () => {
 
   const selectDivision = searchParams.get("division") || "";
   const selectTourType = searchParams.get("tourtype") || "";
-//   console.log(selectDivision);
-//   console.log(selectTourType);
+  //   console.log(selectDivision);
+  //   console.log(selectTourType);
 
   const { data: divisionsData, isLoading: divisionLoading } =
     useGetAllDivisonsQuery(null);
   const { data: tourTypesData, isLoading: tourTypeLoading } =
     useTourInfoQuery();
-
-
-
 
   const handleDivision = (value: string) => {
     const params = new URLSearchParams(searchParams);
@@ -34,7 +31,6 @@ const ToursFilters = () => {
     setSearchParams(params);
   };
 
-
   const handleTourType = (value: string) => {
     const params = new URLSearchParams(searchParams);
     params.set("tourtype", value);
@@ -42,8 +38,7 @@ const ToursFilters = () => {
     console.log(params.get("tourtype"));
   };
 
-
-   const handleClearFilter = () => {
+  const handleClearFilter = () => {
     const params = new URLSearchParams(searchParams);
     params.delete("tourtype");
     params.delete("division");
@@ -51,17 +46,19 @@ const ToursFilters = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col mb-5 gap-4">
-        <h1 className="text-card-foreground font-bold text-center rounded bg-gray-700/5">
-          Filters
-        </h1>
+    <div className="col-span-12 lg:col-span-3 w-full border border-muted rounded-md p-5 space-y-4">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-lg font-semibold">Filters</h1>
       </div>
-      <div className="sm:flex flex-row sm:flex-col gap-4">
+
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row lg:flex-col gap-4">
+        {/* Tour Type */}
         <div className="flex-1">
           <Select
             onValueChange={(value) => handleTourType(value)}
-            value={selectTourType ? selectTourType : ""}
+            value={selectTourType || ""}
             disabled={tourTypeLoading}
           >
             <SelectTrigger className="w-full cursor-pointer">
@@ -76,10 +73,12 @@ const ToursFilters = () => {
             </SelectContent>
           </Select>
         </div>
+
+        {/* Division */}
         <div className="flex-1">
           <Select
             onValueChange={(value) => handleDivision(value)}
-            value={selectDivision ? selectDivision : ""}
+            value={selectDivision || ""}
             disabled={divisionLoading}
           >
             <SelectTrigger className="w-full cursor-pointer">
@@ -94,10 +93,12 @@ const ToursFilters = () => {
             </SelectContent>
           </Select>
         </div>
+
+        {/* Clear button */}
         <div>
           <Button
             className="w-full cursor-pointer"
-            variant={"outline"}
+            variant="outline"
             onClick={handleClearFilter}
           >
             Clear
